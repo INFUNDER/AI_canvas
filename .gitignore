@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.DS_Store
+*.part
+drawings/
+.claude/
+hand_landmarker.task
