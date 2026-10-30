@@ -3,5 +3,4 @@ __pycache__/
 .DS_Store
 *.part
 drawings/
-.claude/
 hand_landmarker.task
