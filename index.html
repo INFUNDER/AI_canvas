@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Air Canvas</title>
+  <meta name="description" content="Draw in the air with your index finger. Hand tracking runs entirely in your browser.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%2346beff'/%3E%3Cpath d='M8 20c4-9 8 3 16-8' stroke='white' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="stage">
+    <video id="video" playsinline muted></video>
+    <canvas id="bg"></canvas>
+    <canvas id="ink"></canvas>
+    <canvas id="fx"></canvas>
+
+    <header class="bar top" id="palette"></header>
+
+    <aside class="bar left" id="tools">
+      <button class="btn" data-tool="brush" data-tip="Brush" data-dwell="350" aria-label="Brush">
+        <svg viewBox="0 0 24 24"><path d="M3 14c3-6 5 4 9-2s5-4 9 1"/></svg>
+      </button>
+      <button class="btn" data-tool="line" data-tip="Line" data-dwell="350" aria-label="Line">
+        <svg viewBox="0 0 24 24"><path d="M5 19 19 5"/></svg>
+      </button>
+      <button class="btn" data-tool="rect" data-tip="Rectangle" data-dwell="350" aria-label="Rectangle">
+        <svg viewBox="0 0 24 24"><rect x="4" y="6.5" width="16" height="11" rx="1"/></svg>
+      </button>
+      <button class="btn" data-tool="circle" data-tip="Circle" data-dwell="350" aria-label="Circle">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7.5"/></svg>
+      </button>
+      <label class="size">
+        <span>Size</span>
+        <input id="size" type="range" min="4" max="60" step="1" value="14" aria-label="Brush size">
+        <output id="size-out">14px</output>
+      </label>
+    </aside>
+
+    <aside class="bar right" id="actions">
+      <button class="btn text" data-action="undo" data-tip="Undo" data-dwell="450">UNDO</button>
+      <button class="btn text" data-action="redo" data-tip="Redo" data-dwell="450">REDO</button>
+      <button class="btn text" data-action="save" data-tip="Save PNG" data-dwell="600">SAVE</button>
+      <button class="btn text danger" data-action="clear" data-tip="Clear all" data-dwell="900">CLEAR</button>
+    </aside>
+
+    <footer class="bar status">
+      <span id="st-gesture">No hand</span>
+      <span id="st-tool">Brush 14px</span>
+      <button id="st-bg" class="link" title="Cycle background (B)">Camera</button>
+      <select id="camera-select" title="Camera"></select>
+      <span id="st-fps">0 fps</span>
+      <button id="help-btn" class="link" title="Help (H)">Help</button>
+    </footer>
+
+    <div id="toast" role="status"></div>
+
+    <section id="help" class="overlay hidden">
+      <div class="card">
+        <h2>Gestures</h2>
+        <dl>
+          <dt>Index finger up</dt><dd>Draw with the current tool</dd>
+          <dt>Index + middle up</dt><dd>Move without drawing / select</dd>
+          <dt>Hover on a button</dt><dd>Hold until the ring fills to pick it</dd>
+          <dt>Fist or open palm</dt><dd>Lift the pen</dd>
+          <dt>Mouse / touch</dt><dd>Draw and click directly, too</dd>
+        </dl>
+        <h2>Keyboard</h2>
+        <dl>
+          <dt>Z / Y</dt><dd>Undo / redo</dd>
+          <dt>C</dt><dd>Clear canvas (undoable)</dd>
+          <dt>S</dt><dd>Save PNG</dd>
+          <dt>B</dt><dd>Cycle background</dd>
+          <dt>[ / ]</dt><dd>Brush size</dd>
+          <dt>1–8 &nbsp;E &nbsp;T</dt><dd>Colors, eraser, cycle tool</dd>
+          <dt>K / F</dt><dd>Hand skeleton / fullscreen</dd>
+          <dt>H</dt><dd>Toggle this help</dd>
+        </dl>
+        <p class="hint">Click anywhere or press H to close</p>
+      </div>
+    </section>
+
+    <section id="intro" class="overlay">
+      <div class="card intro">
+        <h1>Air Canvas</h1>
+        <p>Draw in the air with your index finger. Raise your index and middle fingers to move and pick tools.</p>
+        <button id="start" class="primary" disabled>Loading hand model…</button>
+        <p id="intro-status" class="hint">Runs entirely in your browser. Video never leaves your device.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
